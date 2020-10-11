@@ -25,14 +25,20 @@
                                             <h4 class="text-center">
                                                 Ten presente tu email para logearte
                                             </h4>
-                                            <v-form>
-                                                <v-text-field label="Email" name="email" prepend-icon="email" type="text" v-model="formLogin.email" />
-                                                <v-text-field id="password" label="Password" name="Password" prepend-icon="lock" type="password" v-model="formLogin.password" />
+
+                                            <SnackNotification icon="check_circle_outline" color="green lighten-2" :snackbar="successData.showSuccess" :text="successData.message" />
+                                            <SnackNotification icon="error_outline" color="red accent-2" :snackbar="errorData.showError" :text="errorData.message" />
+
+                                            <v-form ref="form" v-model="valid" lazy-validation>
+                                                <v-text-field label="Email" required :rules="formLogin.emailRules" name="email" prepend-icon="email" type="text" v-model="formLogin.email" />
+                                                <v-text-field id="password" required :rules="formLogin.passwordRules" name="password" label="Password" prepend-icon="lock" type="password" v-model="formLogin.password" />
                                             </v-form>
                                             <h3 class="text-center mt-3"> Olvidaste tu contraseña ?</h3>
+
                                         </v-card-text>
+
                                         <div class="text-center mt-3 ">
-                                            <v-btn rounded color="light-blue lighten-1" dark> Iniciar sesion </v-btn>
+                                            <v-btn @click="login" :disabled="!valid" rounded color="light-blue lighten-1" dark> Iniciar sesion </v-btn>
                                         </div>
                                     </v-col>
                                     <v-col cols="12" md="4" class="light-blue lighten-3">
@@ -72,18 +78,19 @@
                                                 </v-btn>
                                             </div>
                                             <h4 class="text-center mt-4"> Ten presente tu email para registrarte </h4>
-                                            <v-form @submit.prevent="signup">
-                                                <v-select v-model="form.typeUser" :items="form.roles" menu-props="auto" label="Tipo de usuario" hide-details prepend-icon="supervisor_account" single-line></v-select>
-                                                <v-text-field label="Name" name="Name" prepend-icon="person" type="text" v-model="form.name" />
-                                                <v-text-field label="Email" name="Email" prepend-icon="email" type="text" v-model="form.email" />
-                                                <v-text-field label="Address" name="Address" prepend-icon="ballot" type="text" v-model="form.address" />
-                                                <v-text-field label="Phone" name="Phone" prepend-icon="phone" type="text" v-model="form.phone" />
-                                                <v-text-field label="Password" name="Password" prepend-icon="lock" type="password" v-model="form.password" />
+                                            <SnackNotification icon="error_outline" color="red accent-2" :snackbar="errorData.showError" :text="errorData.message" />
+                                            <v-form ref="form" @submit.prevent="signup" v-model="valid" lazy-iscreatedMessage>
+                                                <v-select v-model="form.typeUser" :rules="form.rolesRules" :items="form.roles" menu-props="auto" label="Tipo de usuario" hide-details prepend-icon="supervisor_account" single-line required></v-select>
+                                                <v-text-field label="Name" :rules="form.nameRules" name="Name" prepend-icon="person" type="text" v-model="form.name" required />
+                                                <v-text-field label="Email" :rules="form.emailRules" name="Email" prepend-icon="email" type="text" v-model="form.email" required />
+                                                <v-text-field label="Address" :rules="form.addressRules" name="Address" prepend-icon="ballot" type="text" v-model="form.address" required />
+                                                <v-text-field label="Phone" :rules="form.phoneRules" name="Phone" prepend-icon="phone" type="text" v-model="form.phone" required />
+                                                <v-text-field label="Password" :rules="form.passwordRules" name="Password" prepend-icon="lock" type="password" v-model="form.password" required />
                                             </v-form>
 
                                         </v-card-text>
                                         <div class="text-center mt-n5 ">
-                                            <v-btn type="submit" rounded color="light-blue lighten-1" dark> Registrarse</v-btn>
+                                            <v-btn @click="signup" :disabled="!valid" rounded color="light-blue lighten-1" dark> Registrarse</v-btn>
                                         </div>
 
                                     </v-col>
@@ -102,14 +109,26 @@
 
 <script>
 import FooterComponent from '../components/FooterComponent'
+//import Alert from '../components/Alert'
+import SnackNotification from '../components/SnackNotification'
 export default {
     name: 'LoginAndSignUp',
     components: {
-        FooterComponent
+        FooterComponent,
+        //Alert,
+        SnackNotification
     },
     data: () => ({
         step: 1,
-        isRegister: false,
+        valid: true,
+        errorData: {
+            showError: false,
+            message: ''
+        },
+        successData: {
+            showSuccess: false,
+            message: ''
+        },
         form: {
             name: '',
             email: '',
@@ -126,15 +145,128 @@ export default {
                     text: 'empresa'
                 }
             ],
+            emailRules: [
+                v => !!v || 'E-mail is required',
+                v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'El email debe ser valido'
+            ],
+            passwordRules: [
+                v => !!v || 'La contraseña es necesaria',
+                v => v.length >= 6 || "La contraseña debe tener 6 caracteres como minimo"
+            ],
+            nameRules: [
+                v => !!v || 'el nombre es requerido',
+                v => v.length >= 3 || "El nombre debe tener tres caracteres como minimo"
+            ],
+            phoneRules: [
+                v => !!v || 'El telefono es requerido',
+                v => v.length === 10 || "Numero de celular invalido"
+            ],
+            addressRules: [
+                v => !!v || "La direccion es requerida"
+            ],
+            rolesRules: [
+                v => !!v || "El role es requerido"
+            ]
 
         },
         formLogin: {
             email: '',
-            password: ''
+            password: '',
+            passwordRules: [
+                v => !!v || 'La contraseña es necesaria'
+            ],
+            emailRules: [
+                v => !!v || 'El email es requerido',
+                v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Ingresa un email valido'
+            ]
         }
     }),
     props: {
         source: String
+    },
+    methods: {
+
+        login() {
+            this.showError = false;
+            if (this.$refs.form.validate()) {
+
+                if (this.formLogin.email.length <= 0) {
+                    this.errorData.message = "El email es necesario para iniciar sesion";
+                    this.errorData.showError = true;
+                }
+                if (this.formLogin.password.length <= 0) {
+                    this.errorData.message = "La contraseña es  necesaria para iniciar sesion";
+                    this.errorData.showError = true;
+                }
+                var form = {
+
+                    email: this.formLogin.email,
+                    password: this.formLogin.password
+                };
+
+                this.$store
+                    .dispatch("login", form)
+                    .then(result => {
+
+                        if (result.data.code == 200) {
+
+                            if (result.data.user) {
+                                this.$router.replace({
+                                    path: "/dashboard"
+                                });
+                            } else {
+                                this.$refs.form.reset()
+                                this.errorData.message = "Ocurrió un error al iniciar sesión. Intente nuevamente";
+                                this.errorData.showError = true;
+                                setTimeout(() => {
+                                    this.errorData.showError = false;
+                                }, 3000)
+                            }
+                        } else {
+                            console.log('No logueó por: ', result);
+                            this.$refs.form.reset()
+                            this.errorData.message = result.data.message;
+                            this.errorData.showError = true;
+                            setTimeout(() => {
+                                this.errorData.showError = false;
+                            }, 3000)
+                        }
+                    });
+            }
+        },
+        signup() {
+
+            var form = {
+                name: this.form.name,
+                email: this.form.email,
+                phone: parseInt(this.form.phone),
+                address: this.form.address,
+                password: this.form.password,
+                typeUser: this.form.typeUser
+            }
+            this.$store.dispatch('register', form)
+                .then(result => {
+                    if (result.data.code == 200) {
+                        if (result.data.user) {
+                            this.successData.message = "Usuario creado exitosamente"
+                            this.successData.showSuccess = true
+                            this.step--
+                            this.$refs.form.reset()
+
+                        } else {
+                            this.errorData.message = "Ocurrió un error al registrarse por favor intente mas tarde";
+                            this.errorData.showError = true;
+                            this.$refs.form.reset()
+
+                        }
+                    } else {
+                        console.log('No logueó por: ', result);
+                        this.errorData.message = result.data.message;
+                        this.errorData.showError = true;
+                        this.$refs.form.reset()
+                    }
+                })
+        }
     }
 }
 </script>

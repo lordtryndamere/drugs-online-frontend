@@ -3,8 +3,9 @@ import Vuex from 'vuex'
 import UserModule from './modules/user'
 Vue.use(Vuex);
 
-export default new Vuex.store({
+const store = new Vuex.Store({
     modules:{
         user:UserModule
     }
 })
+export default store
