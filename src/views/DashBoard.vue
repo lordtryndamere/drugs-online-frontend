@@ -24,7 +24,6 @@ export default {
             this.$store
                 .dispatch("getprofile")
                 .then(profile => {
-                    console.log(profile);
                     if (profile.data.code == 200) {
                         this.user = profile.data.findUser
                     } else {

@@ -1,41 +1,59 @@
 <template>
-<v-toolbar color="light-blue lighten-3" dark>
-    <v-toolbar-title>DrugsOnline</v-toolbar-title>
+<v-content>
+    <v-toolbar color="light-blue lighten-1" dark>
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        <v-toolbar-title>{{user.name}}</v-toolbar-title>
 
-    <v-divider class="mx-4" vertical></v-divider>
+        <v-divider class="mx-4" vertical></v-divider>
 
-    <span class="subheading">Bienvenido {{user.name}} </span>
+        <v-spacer></v-spacer>
 
-    <v-spacer></v-spacer>
+        <v-toolbar-items class="hidden-sm-and-down">
+            <v-divider vertical></v-divider>
 
-    <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn text>
-            <router-link to="/userlist">Usuarios</router-link>
-        </v-btn>
+            <v-btn text>
+                Ayuda
+            </v-btn>
 
-        <v-divider vertical></v-divider>
+            <v-divider vertical></v-divider>
+            <v-btn @click="logout" text>
+                <strong>
+                    <v-icon>power_settings_new</v-icon>
+                    Salir
+                </strong>
+            </v-btn>
 
-        <v-btn text>
-            Farmacias
-        </v-btn>
+        </v-toolbar-items>
 
-        <v-divider vertical></v-divider>
+    </v-toolbar>
 
-        <v-btn text>
-            About
-        </v-btn>
+    <v-navigation-drawer v-model="drawer" temporary app>
+        <v-list-item>
+            <v-list-item-avatar>
+                <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
+            </v-list-item-avatar>
 
-        <v-divider vertical></v-divider>
-        <v-btn text>
-            Logout
-        </v-btn>
+            <v-list-item-content>
+                <v-list-item-title v-if="user.name"> {{user.name}} </v-list-item-title>
+                <v-list-item-title v-else> "Undefined user" </v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
 
-        <v-divider vertical></v-divider>
+        <v-divider></v-divider>
 
-    </v-toolbar-items>
+        <v-list dense>
+            <v-list-item v-for="item in items" :key="item.title" link>
+                <v-list-item-icon>
+                    <v-icon>{{ item.icon }}</v-icon>
+                </v-list-item-icon>
 
-    <v-app-bar-nav-icon></v-app-bar-nav-icon>
-</v-toolbar>
+                <v-list-item-content>
+                    <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
+        </v-list>
+    </v-navigation-drawer>
+</v-content>
 </template>
 
 <script>
@@ -43,7 +61,25 @@ export default {
     name: 'HeaderComponent',
     props: {
         user: Object
-    }
+    },
+    data: () => ({
+        drawer: null,
+        items: [{
+                title: 'Home',
+                icon: 'mdi-view-dashboard'
+            },
+            {
+                title: 'About',
+                icon: 'mdi-forum'
+            },
+        ],
+    }),
+    methods: {
+        logout() {
+            this.$store.dispatch("logout");
+            this.$router.push('/')
+        },
+    },
 
 }
 </script>

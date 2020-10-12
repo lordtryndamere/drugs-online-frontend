@@ -30,8 +30,8 @@
                                             <SnackNotification icon="error_outline" color="red accent-2" :snackbar="errorData.showError" :text="errorData.message" />
 
                                             <v-form ref="form" v-model="valid" lazy-validation>
-                                                <v-text-field label="Email" required :rules="formLogin.emailRules" name="email" prepend-icon="email" type="text" v-model="formLogin.email" />
-                                                <v-text-field id="password" required :rules="formLogin.passwordRules" name="password" label="Password" prepend-icon="lock" type="password" v-model="formLogin.password" />
+                                                <v-text-field label="Email" @keyup.enter.prevent="login" required :rules="formLogin.emailRules" name="email" prepend-icon="email" type="text" v-model="formLogin.email" />
+                                                <v-text-field id="password" @keyup.enter.prevent="login" required :rules="formLogin.passwordRules" name="password" label="Password" prepend-icon="lock" type="password" v-model="formLogin.password" />
                                             </v-form>
                                             <h3 class="text-center mt-3"> Olvidaste tu contraseña ?</h3>
 
@@ -188,82 +188,92 @@ export default {
 
         login() {
             this.showError = false;
-            if (this.$refs.form.validate()) {
 
-                if (this.formLogin.email.length <= 0) {
-                    this.errorData.message = "El email es necesario para iniciar sesion";
-                    this.errorData.showError = true;
-                }
-                if (this.formLogin.password.length <= 0) {
-                    this.errorData.message = "La contraseña es  necesaria para iniciar sesion";
-                    this.errorData.showError = true;
-                }
-                var form = {
+            if (this.formLogin.email.length <= 0) {
+                this.errorData.message = "El email es necesario para iniciar sesion";
+                this.errorData.showError = true;
+            }
+            if (this.formLogin.password.length <= 0) {
+                this.errorData.message = "La contraseña es  necesaria para iniciar sesion";
+                this.errorData.showError = true;
+            }
+            var form = {
 
-                    email: this.formLogin.email,
-                    password: this.formLogin.password
-                };
+                email: this.formLogin.email.toLowerCase(),
+                password: this.formLogin.password
+            };
 
-                this.$store
-                    .dispatch("login", form)
-                    .then(result => {
+            this.$store
+                .dispatch("login", form)
+                .then(result => {
 
-                        if (result.data.code == 200) {
+                    if (result.data.code == 200) {
 
-                            if (result.data.user) {
-                                this.$router.replace({
-                                    path: "/dashboard"
-                                });
-                            } else {
-                                this.$refs.form.reset()
-                                this.errorData.message = "Ocurrió un error al iniciar sesión. Intente nuevamente";
-                                this.errorData.showError = true;
-                                setTimeout(() => {
-                                    this.errorData.showError = false;
-                                }, 3000)
-                            }
+                        if (result.data.user) {
+                            this.$router.replace({
+                                path: "/dashboard"
+                            });
                         } else {
-                            console.log('No logueó por: ', result);
                             this.$refs.form.reset()
-                            this.errorData.message = result.data.message;
+                            this.errorData.message = "Contraseña o correo incorrectas";
                             this.errorData.showError = true;
                             setTimeout(() => {
                                 this.errorData.showError = false;
-                            }, 3000)
+                            }, 3500);
+
                         }
-                    });
-            }
+                    } else {
+                        console.log('No logueó por: ', result);
+                        this.$refs.form.reset()
+                        this.errorData.message = result.data.message;
+                        this.errorData.showError = true;
+                        setTimeout(() => {
+                            this.errorData.showError = false;
+                        }, 3500);
+
+                    }
+                });
+
         },
         signup() {
 
             var form = {
                 name: this.form.name,
-                email: this.form.email,
+                email: this.form.email.toLowerCase(),
                 phone: parseInt(this.form.phone),
                 address: this.form.address,
                 password: this.form.password,
                 typeUser: this.form.typeUser
             }
+
             this.$store.dispatch('register', form)
                 .then(result => {
                     if (result.data.code == 200) {
                         if (result.data.user) {
                             this.successData.message = "Usuario creado exitosamente"
                             this.successData.showSuccess = true
-                            this.step--
                             this.$refs.form.reset()
+                            this.step--
+                            setTimeout(() => {
+                                this.successData.showSuccess = false
+                            }, 3500);
 
                         } else {
                             this.errorData.message = "Ocurrió un error al registrarse por favor intente mas tarde";
                             this.errorData.showError = true;
                             this.$refs.form.reset()
+                            setTimeout(() => {
+                                this.errorData.showError = false;
+                            }, 3500);
 
                         }
                     } else {
                         console.log('No logueó por: ', result);
                         this.errorData.message = result.data.message;
                         this.errorData.showError = true;
-                        this.$refs.form.reset()
+                        setTimeout(() => {
+                            this.errorData.showError = false;
+                        }, 3500);
                     }
                 })
         }
