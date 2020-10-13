@@ -1,20 +1,22 @@
 <template>
-<div class="hola">
+<v-content class="fill-height" fluid>
 
     <HeaderComponent :user="user" />
-    <h2>Bienvenido a drugs online </h2>
-
-</div>
+    <Slider />
+    <FooterComponent />
+</v-content>
 </template>
 
 <script>
-//import FooterComponent from '../components/FooterComponent'
+import FooterComponent from '../components/FooterComponent'
 import HeaderComponent from '../components/HeaderComponent'
+import Slider from '../components/Slider'
 export default {
     name: 'DashBoard',
     components: {
         //      FooterComponent,
-        HeaderComponent
+        HeaderComponent,
+        Slider
     },
     data: () => ({
         user: {}

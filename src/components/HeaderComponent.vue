@@ -7,15 +7,10 @@
         <v-divider class="mx-4" vertical></v-divider>
 
         <v-spacer></v-spacer>
-
+        <v-text-field prepend-icon="search" v-model="search" label="Buscar productos,farmacias y mas ..." solo-inverted hide-details clearable clear-icon="mdi-close-circle-outline"></v-text-field>
+        <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-sm-and-down">
-            <v-divider vertical></v-divider>
 
-            <v-btn text>
-                Ayuda
-            </v-btn>
-
-            <v-divider vertical></v-divider>
             <v-btn @click="logout" text>
                 <strong>
                     <v-icon>power_settings_new</v-icon>
