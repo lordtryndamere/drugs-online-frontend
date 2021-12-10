@@ -1,7 +1,8 @@
-<template>
+<template >
+
 <v-app>
     <v-content>
-        <v-container class="fill-height" fluid>
+        <v-container class="fill-height light-blue accent-1" fluid >
             <v-row align="center" justify="center">
                 <v-col cols="12" sm="8" md="8">
                     <v-card class="elevation-12">
@@ -80,7 +81,6 @@
                                             <h4 class="text-center mt-4"> Ten presente tu email para registrarte </h4>
                                             <SnackNotification icon="error_outline" color="red accent-2" :snackbar="errorData.showError" :text="errorData.message" />
                                             <v-form ref="form" @submit.prevent="signup" v-model="valid" lazy-iscreatedMessage>
-                                                <v-select v-model="form.typeUser" :rules="form.rolesRules" :items="form.roles" menu-props="auto" label="Tipo de usuario" hide-details prepend-icon="supervisor_account" single-line required></v-select>
                                                 <v-text-field label="Name" :rules="form.nameRules" name="Name" prepend-icon="person" type="text" v-model="form.name" required />
                                                 <v-text-field label="Email" :rules="form.emailRules" name="Email" prepend-icon="email" type="text" v-model="form.email" required />
                                                 <v-text-field label="Address" :rules="form.addressRules" name="Address" prepend-icon="ballot" type="text" v-model="form.address" required />
@@ -105,12 +105,13 @@
 
     </v-content>
 </v-app>
+
 </template>
 
 <script>
-import FooterComponent from '../components/FooterComponent'
+import FooterComponent from '../../components/FooterComponent'
 //import Alert from '../components/Alert'
-import SnackNotification from '../components/SnackNotification'
+import SnackNotification from '../../components/SnackNotification'
 export default {
     name: 'LoginAndSignUp',
     components: {
@@ -135,16 +136,6 @@ export default {
             phone: '',
             address: '',
             password: '',
-            typeUser: '',
-            roles: [{
-                    value: 'client',
-                    text: 'cliente'
-                },
-                {
-                    value: 'seller',
-                    text: 'empresa'
-                }
-            ],
             emailRules: [
                 v => !!v || 'E-mail is required',
                 v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'El email debe ser valido'
@@ -197,8 +188,7 @@ export default {
                 this.errorData.message = "La contraseña es  necesaria para iniciar sesion";
                 this.errorData.showError = true;
             }
-            var form = {
-
+            const  form = {
                 email: this.formLogin.email.toLowerCase(),
                 password: this.formLogin.password
             };
@@ -243,7 +233,6 @@ export default {
                 phone: parseInt(this.form.phone),
                 address: this.form.address,
                 password: this.form.password,
-                typeUser: this.form.typeUser
             }
 
             this.$store.dispatch('register', form)
@@ -280,3 +269,6 @@ export default {
     }
 }
 </script>
+<style scoped>
+
+</style>

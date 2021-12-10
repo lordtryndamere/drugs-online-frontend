@@ -8,9 +8,9 @@
 </template>
 
 <script>
-import FooterComponent from '../components/FooterComponent'
-import HeaderComponent from '../components/HeaderComponent'
-import Slider from '../components/Slider'
+import FooterComponent from '../../components/FooterComponent'
+import HeaderComponent from '../../components/HeaderComponent'
+import Slider from '../../components/Slider'
 export default {
     name: 'DashBoard',
     components: {

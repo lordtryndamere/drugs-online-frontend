@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import LoginAndSignUp from '../views/LoginAndSignUp.vue'
+import Login from '../views/login/login.vue'
 Vue.use(VueRouter)
 
 
@@ -10,35 +10,16 @@ let router = new VueRouter({
   routes:[
     {
       path: '/',
-      name: 'Home',
-      component: LoginAndSignUp,
+      name: 'Login',
+      component: Login,
       meta:{
         guest:true
       }
     },
     {
-      path: '/about',
-      name: 'About',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-    },
-    {
       path: '/dashboard',
       name: 'DashBoard',
-      component: () => import(/* webpackChunkName: "about" */ '../views/DashBoard.vue'),
-      meta:{
-        requiresAuth:true
-      }
-    },
-    {
-      path: '/userlist',
-      name: 'Userlist',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ '../views/Userlist.vue'),
+      component: () => import(/* webpackChunkName: "about" */ '../views/dashboard/dashboard.vue'),
       meta:{
         requiresAuth:true
       }

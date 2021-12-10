@@ -1,6 +1,5 @@
 <template>
 <v-app>
-
     <v-content>
         <router-view> </router-view>
     </v-content>
@@ -21,3 +20,12 @@ export default {
     }),
 };
 </script>
+<style lang="css">
+.login-body {
+
+    background-color: aqua;
+
+
+
+}
+</style>
