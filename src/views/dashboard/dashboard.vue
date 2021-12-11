@@ -3,7 +3,7 @@
 
     <HeaderComponent :user="user" />
     <Slider />
-    <FooterComponent />
+
 </v-content>
 </template>
 
@@ -14,7 +14,7 @@ import Slider from '../../components/Slider'
 export default {
     name: 'DashBoard',
     components: {
-        //      FooterComponent,
+        //FooterComponent,
         HeaderComponent,
         Slider
     },
@@ -26,8 +26,8 @@ export default {
             this.$store
                 .dispatch("getprofile")
                 .then(profile => {
-                    if (profile.data.code == 200) {
-                        this.user = profile.data.findUser
+                    if (profile.data.code == 100) {
+                        this.user = profile.data.data.user
                     } else {
                         this.user = "undefined"
                         console.log('No retorno el usuario por ', profile);

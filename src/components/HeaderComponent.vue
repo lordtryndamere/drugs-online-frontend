@@ -2,12 +2,12 @@
 <v-content>
     <v-toolbar color="light-blue lighten-1" dark>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title>{{user.name}}</v-toolbar-title>
+        <v-toolbar-title  >{{nameDrug?nameDrug:user.fullName}}</v-toolbar-title>
 
         <v-divider class="mx-4" vertical></v-divider>
 
         <v-spacer></v-spacer>
-        <v-text-field prepend-icon="search" v-model="search" label="Buscar productos,farmacias y mas ..." solo-inverted hide-details clearable clear-icon="mdi-close-circle-outline"></v-text-field>
+        <v-text-field prepend-icon="search" v-model="search"     @input='sendSearch'  label="Buscar productos,farmacias y mas ..." solo-inverted hide-details clearable clear-icon="mdi-close-circle-outline"></v-text-field>
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-sm-and-down">
 
@@ -29,15 +29,15 @@
             </v-list-item-avatar>
 
             <v-list-item-content>
-                <v-list-item-title v-if="user.name"> {{user.name}} </v-list-item-title>
+                <v-list-item-title v-if="user.fullName      "> {{user.fullName}} </v-list-item-title>
                 <v-list-item-title v-else> "Undefined user" </v-list-item-title>
             </v-list-item-content>
         </v-list-item>
 
         <v-divider></v-divider>
 
-        <v-list dense>
-            <v-list-item v-for="item in items" :key="item.title" link>
+        <v-list shaped>
+            <v-list-item v-for="item in items" :key="item.title" @click="goToRouter(item)">
                 <v-list-item-icon>
                     <v-icon>{{ item.icon }}</v-icon>
                 </v-list-item-icon>
@@ -55,17 +55,42 @@
 export default {
     name: 'HeaderComponent',
     props: {
-        user: Object
+        user: Object,
+        nameDrug:String
     },
+    
     data: () => ({
+        search:'',
         drawer: null,
         items: [{
-                title: 'Home',
-                icon: 'mdi-view-dashboard'
+                title: 'Droguerias',
+                icon: 'mdi-bank-outline',
+                value: 'Droguerias'
             },
             {
-                title: 'About',
-                icon: 'mdi-forum'
+                title: 'Mis pedidos',
+                icon: 'mdi-cart',
+                value: 'DashBoard'
+            },
+              {
+                title: 'Tarjetas',
+                icon: 'mdi-cards',
+                value: 'DashBoard'
+            },
+            {
+                title: 'Mi Perfil',
+                icon: 'mdi-account',
+                value: 'Profile'
+            },
+            {
+                title: 'Ayuda',
+                icon: 'mdi-chat-alert',
+                value: 'DashBoard'
+            },
+            {
+                title: 'Salir',
+                icon: 'mdi-account-cash-outline',
+                value: 'Login'
             },
         ],
     }),
@@ -74,7 +99,24 @@ export default {
             this.$store.dispatch("logout");
             this.$router.push('/')
         },
+        goToRouter(item){
+            if(item.value=='Login'){
+            this.$store.dispatch("logout");
+            this.$router.push('/')
+            }
+            this.$router.push({name:item.value,params:{}})
+        },
+        sendSearch(){
+            
+            this.$emit('test',this.search)
+        }
+
+
     },
+
+
+
+
 
 }
 </script>

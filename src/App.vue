@@ -1,8 +1,8 @@
 <template>
 <v-app>
-    <v-content>
+    <v-main>
         <router-view> </router-view>
-    </v-content>
+    </v-main>
 </v-app>
 </template>
 
@@ -14,18 +14,20 @@ export default {
     components: {
 
     },
-
+    mounted:function(){
+     this.getAccessToken();
+    },
     data: () => ({
         //
     }),
+    methods:{
+        getAccessToken(){
+        this.$store.dispatch('getAccessToken',{}).then(response=>{
+          if(response.code==100){
+           console.log('access token getter');
+          }
+        });
+        }
+    }
 };
 </script>
-<style lang="css">
-.login-body {
-
-    background-color: aqua;
-
-
-
-}
-</style>

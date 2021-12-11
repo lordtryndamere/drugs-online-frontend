@@ -24,6 +24,30 @@ let router = new VueRouter({
         requiresAuth:true
       }
     },
+    {
+      path: '/droguerias',
+      name: 'Droguerias',
+      component: () => import(/* webpackChunkName: "about" */ '../views/droguerias/droguerias.vue'),
+      meta:{
+        requiresAuth:true
+      }
+    },
+    {
+      path: '/droguerias-productos',
+      name: 'DrogueriasProductos',
+      component: () => import(/* webpackChunkName: "about" */ '../views/products/products.vue'),
+      meta:{
+        requiresAuth:true
+      }
+    },
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: () => import(/* webpackChunkName: "about" */ '../views/profile/profile.vue'),
+      meta:{
+        requiresAuth:true
+      }
+    },
     
   ]
 })

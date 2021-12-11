@@ -7,7 +7,7 @@ import Vuex from 'vuex'
 import store from './store/store'
 Vue.config.productionTip = false
 Vue.use(Vuex)
-axios.defaults.baseURL = ' https://drugs-online-api.herokuapp.com/API'
+axios.defaults.baseURL = 'http://localhost:8080/v1'
 
 new Vue({
   router,
