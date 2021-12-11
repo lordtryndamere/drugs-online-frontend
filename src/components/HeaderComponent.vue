@@ -11,6 +11,13 @@
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-sm-and-down">
 
+            <v-btn color="light-blue lighten-1">
+                    <v-badge left color="green">
+                        <span slot="badge">4</span>
+                        <v-icon>shopping_cart</v-icon> Carrito
+                    </v-badge>
+                </v-btn>
+
             <v-btn @click="logout" text>
                 <strong>
                     <v-icon>power_settings_new</v-icon>
@@ -56,7 +63,8 @@ export default {
     name: 'HeaderComponent',
     props: {
         user: Object,
-        nameDrug:String
+        nameDrug:String,
+        badge:Number
     },
     
     data: () => ({

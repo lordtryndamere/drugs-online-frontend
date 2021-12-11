@@ -1,7 +1,7 @@
 <template>
   <v-content class="fill-height" fluid>
     <HeaderComponent @test="getDrugs" :user="user" />
-    <ListDroguerias :droguerias="list" />
+    <ListDroguerias   uerias :droguerias="list" />
   </v-content>
 </template>
 

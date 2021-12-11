@@ -180,13 +180,15 @@ export default {
       retina_detect: true,
     });
   },
-  data: () => ({}),
+  data: () => ({
+
+  }),
   props: {
     products: Array,
   },
   methods: {
     addToCart(data) {
-      console.log(data);
+      this.$emit('addToCart',data)
     },
   },
 };

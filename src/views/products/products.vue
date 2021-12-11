@@ -1,7 +1,9 @@
 <template>
   <v-content class="fill-height" fluid>
-    <HeaderComponent @test="getProducts" :user="user"  :nameDrug="nameDrug" />
-    <ListProducts :products="list" />
+    <HeaderComponent @test="getProducts" :user="user"   :nameDrug="nameDrug" />
+    <ListProducts   @addToCart="addProduct" :products="list" />
+       <Cart :productsCart="productsCart"/>
+
   </v-content>
 </template>
 
@@ -9,19 +11,29 @@
 
 import HeaderComponent from '../../components/HeaderComponent.vue'
 import ListProducts from '../../components/products/ListProducts.vue'
+import Cart from '../../components/cart/Cart.vue'
 export default {
     name: 'DrogueriasProductos',
     components: {
         HeaderComponent,
-        ListProducts
+        ListProducts,
+        Cart
     },
     data: () => ({
         user: {},
         nameDrug:'',
+        productsCart:[],
         idDrug:'',
         list:[]
     }),
+
     methods: {
+        addProduct(product){
+            console.log('llego el producto',product);
+          this.productsCart.push({...product,quantity:0}) 
+
+        },
+
         getProfileUser() {
             this.$store
                 .dispatch("getprofile")
@@ -55,6 +67,7 @@ export default {
     },
 
     mounted() {
+        console.log(this.productsCart);
         this.getProfileUser()
         this.getProducts()
     }
