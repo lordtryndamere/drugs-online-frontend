@@ -7,7 +7,9 @@ import Vuex from 'vuex'
 import store from './store/store'
 Vue.config.productionTip = false
 Vue.use(Vuex)
-axios.defaults.baseURL = 'http://localhost:8080/v1'
+const localUrl ='http://localhost:8080/v1'
+const  stagingUrl =  'https://drugs-online-mysql.herokuapp.com/v1'
+axios.defaults.baseURL =  process.env.NODE_ENV === 'production' ? stagingUrl : localUrl  ;
 
 new Vue({
   router,

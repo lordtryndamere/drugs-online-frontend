@@ -16,6 +16,7 @@ export default {
     },
     mounted:function(){
      this.getAccessToken();
+     console.log( 'Ambiente',process.env.NODE_ENV);
     },
     data: () => ({
         //

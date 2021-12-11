@@ -13,6 +13,6 @@ function createInstance(baseURL){
 
 export default {
     install () {
-        Vue.prototype.$http = localInstance
+        Vue.prototype.$http = process.env.NODE_ENV === 'production' ? devInstance : localInstance
     }
-}; // Check debug/build mode
+}; 
