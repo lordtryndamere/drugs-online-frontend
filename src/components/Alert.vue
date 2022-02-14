@@ -9,5 +9,5 @@ export default {
         type: String,
         text: String
     }
-}
+}    
 </script>>
